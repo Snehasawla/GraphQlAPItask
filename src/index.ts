@@ -1,27 +1,34 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import "reflect-metadata";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "graphql";
+import * as Express from "express";
+import { Field, ID, ObjectType, Resolver ,Query } from "type-graphql";
+import { createConnection } from "typeorm";
 
-@ObjectType()
-class User{
-    @Field(type => ID)
-    id: string;
-
-    @Field({})
-    username: string;
-
-    @Field({nullable: true})
-    email?: string;
-
-    @Field()
-    password: string;
-
-    @Field(type => [Post])    
-    posts: [];
+@Resolver()
+class HelloResolver{
+    @Query(() => String)
+    async helloword() {
+        return "Hello World";
+    }
 }
 
-@ObjectType()
-class Post{
-    @Field(type => String)
-    title: string;
+const main = async () =>{
+    await createConnection();
 
-    user: User;
+    const schema = await buildSchema({
+        resolvers: [ HelloResolver ]
+    });
+
+    const apolloServer = new ApolloServer({ schema });
+    
+    const app = Express();
+
+    apolloServer.applyMiddleware({ app });
+
+    app.listen(4000, () => {
+        console.log("server started on http://localhost:4000/graphql");
+    })
+
+    main();
 }
