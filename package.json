@@ -6,6 +6,7 @@
   "dependencies": {
     "apollo-server-express": "^2.24.0",
     "bcryptjs": "^2.4.3",
+    "class-validator": "^0.13.1",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
     "pg": "^8.6.0",
@@ -20,9 +21,12 @@
     "@types/node": "^15.0.1",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^4.2.4"
   },
   "scripts": {
-    "start": "ts-node src/index.js"
-  }
+    "start": "ts-node-dev --respawn src/index.ts"
+  },
+  "repository": "https://github.com/Snehasawla/GraphQlAPItask.git",
+  "author": "Sneha Sawla <snehasawla2409@gmail.com>"
 }
