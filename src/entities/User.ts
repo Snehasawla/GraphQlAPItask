@@ -30,4 +30,11 @@ export class User extends BaseEntity {
     @Column()
     password: string;
 
+    @Field({nullable: true})
+    @Column()
+    post: [];
+
+    @Column()
+    confirmed: boolean;
+
 }

@@ -10,13 +10,15 @@ import {redis} from "./redis";
 import cors from "cors";
 import { LoginResolver } from "./modules/Users/login";
 import {MeResolver} from "./modules/Users/Me";
+import { sendEmail } from "./modules/utils/sendEmail";
+import { PostResolver } from "./modules/Post/PostCreate";
 
 
 const main = async () =>{
     await createConnection();
 
     const schema = await buildSchema({
-        resolvers: [ MeResolver, RegisterResolver, LoginResolver],
+        resolvers: [ MeResolver, RegisterResolver, LoginResolver, PostResolver],
         authChecker:({ context: {req} }) => {
             return !!req.session.userId;
         }
@@ -59,6 +61,7 @@ const main = async () =>{
 
     app.listen(4000, () => {
         console.log("server started on http://localhost:4000/graphql");
+        await sendEmail();
     })
 
     main();
