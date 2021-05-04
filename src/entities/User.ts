@@ -34,7 +34,7 @@ export class User extends BaseEntity {
     @Column()
     post: [];
 
-    @Column()
+    @Column("bool", {default: false})
     confirmed: boolean;
 
 }

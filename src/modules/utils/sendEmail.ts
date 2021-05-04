@@ -21,7 +21,7 @@ export async function sendEmail(email: string, url: string) {
     to: email, // list of receivers
     subject: "Hello ✔", // Subject line
     text: "Hello world?", // plain text body
-    html: `<a href=${url}>${url}</a>`, // html body
+    html: `<a href="${url}">${url}</a>`, // html body
   };
 
   const info = await transporter.sendMail(mailOption)

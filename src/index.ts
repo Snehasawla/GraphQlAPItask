@@ -1,31 +1,31 @@
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
 import Express from "express";
-import { buildSchema, formatArgumentValidationError } from "type-graphql";
+import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
-import {RegisterResolver} from "./modules/Users/Register";
 import session from "express-session";
 import ConnectRedis from "connect-redis";
 import {redis} from "./redis";
 import cors from "cors";
-import { LoginResolver } from "./modules/Users/login";
-import {MeResolver} from "./modules/Users/Me";
 import { sendEmail } from "./modules/utils/sendEmail";
-import { PostResolver } from "./modules/Post/PostCreate";
 
 
 const main = async () =>{
     await createConnection();
 
     const schema = await buildSchema({
-        resolvers: [ MeResolver, RegisterResolver, LoginResolver, PostResolver],
+        resolvers: [ __dirname+"/modules/**/*.ts" ],
         authChecker:({ context: {req} }) => {
             return !!req.session.userId;
         }
     });
 
     const apolloServer = new ApolloServer({ schema, 
-        formatError: formatArgumentValidationError,
+        formatError: function(error){
+            console.log(null)
+            return error;
+            
+        },
         context: ({req}: any) => ({ req }) 
     });
     
@@ -61,7 +61,7 @@ const main = async () =>{
 
     app.listen(4000, () => {
         console.log("server started on http://localhost:4000/graphql");
-        await sendEmail();
+        sendEmail(email, url);
     })
 
     main();

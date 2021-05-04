@@ -27,6 +27,7 @@ export class LoginResolver{
     }
 
     ctx.req.session!.userId = user.id; //reading cookie;
+
     return user;
 }
 
